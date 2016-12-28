@@ -65,13 +65,13 @@
 							<label for="description">Ödeme Türü</label>
 							<div class="radio">
 								<label>
-									<input type="radio" name="optionsRadios" value="1" required>
+									<input type="radio" name="optionsRadios" value="bagis" required>
 									Bağış
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="optionsRadios" value="2" checked required>
+									<input type="radio" name="optionsRadios" value="aidat" checked required>
 									Üyelik Ödentisi (Aidat)
 								</label>
 							</div>

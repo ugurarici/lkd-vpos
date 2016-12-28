@@ -3,5 +3,10 @@
         "symfony/validator": "^3.2",
         "gregwar/captcha": "^1.1",
         "phpmailer/phpmailer": "^5.2"
+    },
+    "autoload": {
+        "classmap": [
+            "classes"
+        ]
     }
 }
