@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>LKD - Bağış / Aidat Ödeme Formu</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<!-- Vendor libraries -->
@@ -38,7 +38,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<form data-toggle="validator" method="POST" action="">
+					<form data-toggle="validator" method="POST" action="process_payment.php">
 						<div class="form-group">
 							<label for="name">Adınız</label>
 							<input type="text" class="form-control" id="name" name="nameText" placeholder="Adınız" data-validate="true" data-error="Adınızı giriniz" required>
@@ -91,7 +91,7 @@
 										<h3 class="panel-title">Ödeme Bilgileri</h3>
 									</div>
 									<div class="col-xs-4">
-										<img class="img-responsive pull-right" style="max-height: 20px;" src="http://www.pngmart.com/files/3/Credit-Card-Visa-And-Master-Card-PNG-HD.png">
+										<img class="img-responsive pull-right" style="max-height: 20px;" src="images/visa-master.png">
 									</div>
 								</div>
 							</div>
@@ -122,21 +122,64 @@
 							<input type="text" class="form-control" id="telephone" name="tutarText" placeholder="20,13" data-validate="true" data-error="Lütfen yatırmak istediğiniz miktarı giriniz" required>
 							<div class="help-block with-errors"></div>
 						</div>
+						<hr>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-sm-6 col-xs-12 text-center">
+									<img class="" id="captchaImage">&nbsp;
+									<a href="#" id="changeCaptcha" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i> değiştir</a>
+								</div>
+								<div class="col-sm-6 col-xs-12">
+									<label for="txtCaptcha">Bulmaca Yanıtı</label>
+									<input type="text" class="form-control" id="txtCaptcha" name="captchaText" data-validate="true" data-error="Lütfen bulmaca çözümünü girin" required>
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+						</div>
 						<button type="submit" class="btn btn-primary btn-block btn-lg">GÖNDER</button>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
-		<script type="text/javascript">
-			/* Fancy restrictive input formatting via jQuery.payment library*/
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
+	<script type="text/javascript">
+		//	createCaptcha.php dosyası üzerinden bulmaca oluşturup ekranda gösterecek JS fonksiyonumuzu tanımlıyoruz
+		var createCaptcha = function(){
+			$("#changeCaptcha i").addClass("fa-spin");
+			$("#changeCaptcha").addClass("disabled");
+			$.get( "createCaptcha.php", function(data) {
+				$("#captchaImage").attr("src", data);
+			})
+			.fail(function() {
+				alert( "Bulmaca yenilenemedi" );
+			})
+			.always(function(){
+				$("#changeCaptcha").removeClass("disabled");
+				$("#changeCaptcha i").removeClass("fa-spin");
+			});
+		}
+
+		//	sayfa yüklendiğinde çalışacak JS kodları
+		$(document).ready(function(){
+			//	jquery.payment eklentisi sayesinde kart bilgilerini uygun formatta maskeliyoruz
 			$('input[id=cardNumber]').payment('formatCardNumber');
 			$('input[id=cardCVC]').payment('formatCardCVC');
 			$('input[id=cardExpiry').payment('formatCardExpiry');
-		</script>
-	</body>
-	</html>
+
+			//	ilk yükleme için bulmaca oluşturulup gösterilmesini sağlıyoruz
+			createCaptcha();
+
+			//	bulmacanın yanındaki değiştirme bağlantısına tıklandığında yeni bir tane oluşturulup gösterilmesini sağlıyoruz
+			$("#changeCaptcha").click(function(e){
+				e.preventDefault();
+				createCaptcha();
+			});
+		});
+	</script>
+</body>
+</html>
