@@ -110,7 +110,7 @@ class PaymentInformationValidation{
 			$this->creditCard,
 			array(
 				new NotBlank(array('message' => 'Kart numarası boş olamaz')),
-				new CardScheme(array('schemes' => array('VISA', 'MASTERCARD'), 'message' => 'Desteklenmeyen kart tipi ya da yanlış kart numarası')),
+				new CardScheme(array('schemes' => array('VISA', 'MASTERCARD', 'AMEX'), 'message' => 'Desteklenmeyen kart tipi ya da yanlış kart numarası')),
 				)
 			);
 		$this->addToAllViolations($creditCardViolations);
