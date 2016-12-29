@@ -143,7 +143,7 @@ class PaymentInformationValidation{
 			$this->cvc,
 			array(
 				new NotBlank(array('message' => 'CVC (kart güvenlik kodu) boş olamaz')),
-				new Length(array('min' => 3, 'max' => 3, 'exactMessage' => 'CVC (kart güvenlik kodu) {{ limit }} karakter olmalıdır', 'minMessage' => 'CVC (kart güvenlik kodu) en az {{ limit }} karakter olmalıdır', 'maxMessage' => 'CVC (kart güvenlik kodu) en fazla {{ limit }} karakter olmalıdır')),
+				new Length(array('min' => 3, 'max' => 4, 'exactMessage' => 'CVC (kart güvenlik kodu) {{ limit }} karakter olmalıdır', 'minMessage' => 'CVC (kart güvenlik kodu) en az {{ limit }} karakter olmalıdır', 'maxMessage' => 'CVC (kart güvenlik kodu) en fazla {{ limit }} karakter olmalıdır')),
 				)
 			);
 		$this->addToAllViolations($cvcViolations);
