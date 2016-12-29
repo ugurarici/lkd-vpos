@@ -37,29 +37,29 @@
 						<div class="row">
 							<div class="form-group col-sm-6">
 								<label for="name">Adınız <small style="color:red;"><em>*</em></small></label>
-								<input type="text" class="form-control" id="name" name="nameText" placeholder="Adınız" data-validate="true" data-error="Adınızı giriniz" required>
+								<input type="text" class="form-control" id="name" name="name" placeholder="Adınız" data-validate="true" data-error="Adınızı giriniz" required>
 								<div class="help-block with-errors"></div>
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="surname">Soyadınız <small style="color:red;"><em>*</em></small></label>
-								<input type="text" class="form-control" id="surname" name="surnameText" placeholder="Soyadınız" data-validate="true" data-error="Soyadınızı giriniz" required>
+								<input type="text" class="form-control" id="surname" name="surname" placeholder="Soyadınız" data-validate="true" data-error="Soyadınızı giriniz" required>
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group col-sm-6">
 								<label for="telephone">Telefon Numaranız</label>
-								<input type="text" class="form-control" id="telephone" name="telephoneText" placeholder="05---------">
+								<input type="text" class="form-control" id="telephone" name="phone" placeholder="05---------">
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="Email">E-Posta Adresiniz <small style="color:red;"><em>*</em></small></label>
-								<input type="email" class="form-control" id="Email" name="emailText" placeholder="E-Posta Adresiniz" data-validate="true" data-error="Lütfen geçerli bir E-Posta adresi giriniz." required>
+								<input type="email" class="form-control" id="Email" name="email" placeholder="E-Posta Adresiniz" data-validate="true" data-error="Lütfen geçerli bir E-Posta adresi giriniz." required>
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="address">Adresiniz</label>
-							<textarea type="text" class="form-control" id="address" name="addressTextArea" placeholder="Adresiniz"></textarea>
+							<textarea type="text" class="form-control" id="address" name="address" placeholder="Adresiniz"></textarea>
 						</div>
 						<hr>
 						<div class="row">
@@ -67,20 +67,20 @@
 								<label for="description">Ödeme Türü <small style="color:red;"><em>*</em></small></label>
 								<div class="radio">
 									<label>
-										<input type="radio" name="optionsRadios" value="aidat" checked required>
+										<input type="radio" name="payment_type" value="aidat" checked required>
 										Üyelik Ödentisi (Aidat)
 									</label>
 								</div>
 								<div class="radio">
 									<label>
-										<input type="radio" name="optionsRadios" value="bagis" required>
+										<input type="radio" name="payment_type" value="bagis" required>
 										Bağış
 									</label>
 								</div>
 							</div>
 							<div class="form-group col-sm-9">
 								<label for="description">Açıklama</label>
-								<textarea type="text" class="form-control" id="decription" name="descriptionTextArea" placeholder="Açıklama Giriniz"></textarea>
+								<textarea type="text" class="form-control" id="decription" name="description" placeholder="Açıklama Giriniz"></textarea>
 							</div>
 						</div>
 						<div id="memberWarning" class="alert alert-info" role="alert">
@@ -88,7 +88,7 @@
 						</div>
 						<div class="form-group">
 							<label for="Tutar">Tutarı Giriniz <small style="color:red;"><em>*</em></small></label>
-							<input type="text" class="form-control" id="telephone" name="tutarText" placeholder="20,13" data-validate="true" data-error="Lütfen yatırmak istediğiniz miktarı giriniz" required>
+							<input type="text" class="form-control" id="telephone" name="amount" placeholder="20,13" data-validate="true" data-error="Lütfen yatırmak istediğiniz miktarı giriniz" required>
 							<div class="help-block with-errors"></div>
 						</div>
 						<div class="panel panel-default">
@@ -105,7 +105,7 @@
 							<div class="panel-body">
 								<div class="form-group">
 									<label for="cardNumber">Kredi Kartı Numaranız <small style="color:red;"><em>*</em></small></label>
-									<input type="tel" class="form-control" id="cardNumber" name="cardNoText" placeholder="1234 1234 1234 1234" data-validate="true" data-error="Lütfen kredi kartı numaranızı giriniz" required>
+									<input type="tel" class="form-control" id="cardNumber" name="cardNo" placeholder="1234 1234 1234 1234" data-validate="true" data-error="Lütfen kredi kartı numaranızı giriniz" required>
 									<div class="help-block with-errors"></div>
 								</div>
 								<div class="form-inline">
@@ -133,7 +133,7 @@
 								</div>
 								<div class="col-sm-6 col-xs-12">
 									<label for="txtCaptcha">Bulmaca Yanıtı <small style="color:red;"><em>*</em></small></label>
-									<input type="text" class="form-control" id="txtCaptcha" name="captchaText" data-validate="true" data-error="Lütfen bulmaca çözümünü girin" required>
+									<input type="text" class="form-control" id="txtCaptcha" name="captcha" data-validate="true" data-error="Lütfen bulmaca çözümünü girin" required>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -182,7 +182,7 @@
 				createCaptcha();
 			});
 
-			$('input[type=radio][name=optionsRadios]').change(function() {
+			$('input[type=radio][name=payment_type]').change(function() {
 				if (this.value == 'bagis') {
 					$("#submitButton").text("BAĞIŞ YAP");
 					$("#memberWarning").hide('fast');
