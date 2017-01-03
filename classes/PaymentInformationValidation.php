@@ -23,6 +23,22 @@ class PaymentInformationValidation{
 
 	private $validator;
 
+	public static function validateFromObject(Payment $payment){
+		$obj = new self([
+			"name" => $payment->userName,
+			"surname" => $payment->userSurname,
+			"paymentType" => $payment->paymentType,
+			"email" => $payment->userEmail,
+			"creditCard" => $payment->cardNumber,
+			"expMonth" => $payment->cardExpirtyMonth,
+			"expYear" => $payment->cardExpirtyYear,
+			"cvc" => $payment->cardCVV,
+			"amount" => $payment->amount
+			]);
+
+		return $obj;
+	}
+
 	public function __construct($params=[]){
 		$emptyParams = ["name" => "", "surname" => "", "paymentType" => "", "email" => "", "creditCard" => "", "expMonth" => "", "expYear" => "", "cvc" => "", "amount" => ""];
 		$finalParams = array_merge($emptyParams, $params);
