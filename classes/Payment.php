@@ -22,7 +22,7 @@ class Payment{
 	public $cardExpirtyYear;
 	public $cardCVV;
 
-	private $con;
+	private $con = null;
 
 	public function __construct($new = null){
 		if(!is_null($new)){
@@ -45,28 +45,11 @@ class Payment{
 
 			$this->validate();
 
-			$this->con = new PDO("mysql:host=localhost;dbname=lkd_vpos;charset=utf8", "root", "root");
-
 			$this->save();
 
 			$this->vposPayment();
 			die(var_dump($this));
 			$this->sendEmails();
-		}
-	}
-
-	public function updateStatus($status, $message = null){
-		//	burada gelen bilgilerle hem veritabanında hem de obje içinde durum ve ödeme sonucu alanlarını güncelleyeceğiz
-		$this->isSuccess = (bool)$status;
-		if( ! is_null($message) ) $this->paymentResultDescription = (string)$message;
-		$this->save();
-	}
-
-	public function save(){
-		if($this->id > 0){
-			$this->updateOnDB();
-		}else{
-			$this->insertToDB();
 		}
 	}
 
@@ -86,7 +69,23 @@ class Payment{
 		}
 	}
 
+	public function updateStatus($status, $message = null){
+		//	burada gelen bilgilerle hem veritabanında hem de obje içinde durum ve ödeme sonucu alanlarını güncelleyeceğiz
+		$this->isSuccess = (bool)$status;
+		if( ! is_null($message) ) $this->paymentResultDescription = (string)$message;
+		$this->save();
+	}
+
+	public function save(){
+		if($this->id > 0){
+			$this->updateOnDB();
+		}else{
+			$this->insertToDB();
+		}
+	}
+
 	private function insertToDB(){
+		if( is_null($this->con )) $this->createConnection();
 		//	sorgu için hazırlık yapalım
 		$createPaymentAttempt = $this->con->prepare("INSERT INTO payment_attempts (transaction_id, user_name, user_surname, user_phone, user_email, user_address, user_ip, payment_type, payment_description, amount, user_card_info) VALUES (:transaction_id, :user_name, :user_surname, :user_phone, :user_email, :user_address, :user_ip, :payment_type, :payment_description, :amount, :user_card_info)");
 
@@ -117,6 +116,7 @@ class Payment{
 	}
 
 	private function updateOnDB(){
+		if( is_null($this->con )) $this->createConnection();
 		//	sorgu için hazırlık yapalım
 		$updatePaymentAttempt = $this->con->prepare("UPDATE payment_attempts SET transaction_id = :transaction_id, user_name = :user_name, user_surname = :user_surname, user_phone = :user_phone, user_email = :user_email, user_address = :user_address, user_ip = :user_ip, payment_type = :payment_type, payment_description = :payment_description, amount = :amount, user_card_info = :user_card_info, is_success = :is_success, payment_result_description = :payment_result_description WHERE id = :id");
 
@@ -145,5 +145,9 @@ class Payment{
 		if( ! $isUpdated){
 			throw new Exception("Veritabanında güncellenemedi :(", 1);
 		}
+	}
+
+	private function createConnection(){
+		$this->con = new PDO("mysql:host=".MYSQL_HOST.";dbname=".MYSQL_DATABASE.";charset=utf8", MYSQL_USER, MYSQL_PASSWORD);
 	}
 }

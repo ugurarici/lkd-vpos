@@ -1,10 +1,10 @@
 <?php
 
 class PaymentVPOS{
-	const MERCHANTID = '000100000013621';
-	const PASSWORD = 'Sa47Pwz3';
-	const TERMINALNO = 'VP000593';
-	const POXURL = 'https://onlineodemetest.vakifbank.com.tr:4443/VposService/v3/Vposreq.aspx';
+	const MERCHANTID = VPOS_MERCHANTID;
+	const PASSWORD = VPOS_PASSWORD;
+	const TERMINALNO = VPOS_TERMINALNO;
+	const POXURL = VPOS_POXURL;
 
 	private $payment;
 
