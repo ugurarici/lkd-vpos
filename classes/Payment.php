@@ -16,6 +16,8 @@ class Payment{
 	public $userCardInfo;
 	public $isSuccess;
 	public $paymentResultDescription;
+	public $isUserMailSent;
+	public $isAdminMailSent;
 
 	public $cardNumber;
 	public $cardExpirtyMonth;
@@ -48,8 +50,9 @@ class Payment{
 			$this->save();
 
 			$this->vposPayment();
-			die(var_dump($this));
+			
 			$this->sendEmails();
+			// die(var_dump($this));
 		}
 	}
 
@@ -69,6 +72,10 @@ class Payment{
 		}
 	}
 
+	private function sendEmails(){
+		$mails = new PaymentMailer($this);
+	}
+
 	public function updateStatus($status, $message = null){
 		//	burada gelen bilgilerle hem veritabanında hem de obje içinde durum ve ödeme sonucu alanlarını güncelleyeceğiz
 		$this->isSuccess = (bool)$status;
@@ -76,7 +83,15 @@ class Payment{
 		$this->save();
 	}
 
+	public function mailSent($userType){
+		if($userType==="user") $this->isUserMailSent = true;
+		if($userType==="admin") $this->isAdminMailSent = true;
+		$this->save();
+	}
+
 	public function save(){
+		if( is_null($this->con )) $this->createConnection();
+
 		if($this->id > 0){
 			$this->updateOnDB();
 		}else{
@@ -85,7 +100,6 @@ class Payment{
 	}
 
 	private function insertToDB(){
-		if( is_null($this->con )) $this->createConnection();
 		//	sorgu için hazırlık yapalım
 		$createPaymentAttempt = $this->con->prepare("INSERT INTO payment_attempts (transaction_id, user_name, user_surname, user_phone, user_email, user_address, user_ip, payment_type, payment_description, amount, user_card_info) VALUES (:transaction_id, :user_name, :user_surname, :user_phone, :user_email, :user_address, :user_ip, :payment_type, :payment_description, :amount, :user_card_info)");
 
@@ -116,9 +130,8 @@ class Payment{
 	}
 
 	private function updateOnDB(){
-		if( is_null($this->con )) $this->createConnection();
 		//	sorgu için hazırlık yapalım
-		$updatePaymentAttempt = $this->con->prepare("UPDATE payment_attempts SET transaction_id = :transaction_id, user_name = :user_name, user_surname = :user_surname, user_phone = :user_phone, user_email = :user_email, user_address = :user_address, user_ip = :user_ip, payment_type = :payment_type, payment_description = :payment_description, amount = :amount, user_card_info = :user_card_info, is_success = :is_success, payment_result_description = :payment_result_description WHERE id = :id");
+		$updatePaymentAttempt = $this->con->prepare("UPDATE payment_attempts SET transaction_id = :transaction_id, user_name = :user_name, user_surname = :user_surname, user_phone = :user_phone, user_email = :user_email, user_address = :user_address, user_ip = :user_ip, payment_type = :payment_type, payment_description = :payment_description, amount = :amount, user_card_info = :user_card_info, is_success = :is_success, payment_result_description = :payment_result_description, is_mail_to_user_sent = :is_mail_to_user_sent, is_mail_to_admin_sent = :is_mail_to_admin_sent WHERE id = :id");
 
 		//	sorgu içine gönderilecek değerleri hazırlayalım
 		$queryValues = array(
@@ -135,7 +148,9 @@ class Payment{
 			"amount" => $this->amount,
 			"user_card_info" => $this->userCardInfo,
 			"is_success" => $this->isSuccess,
-			"payment_result_description" => $this->paymentResultDescription
+			"payment_result_description" => $this->paymentResultDescription,
+			"is_mail_to_user_sent" => $this->isUserMailSent,
+			"is_mail_to_admin_sent" => $this->isAdminMailSent
 			);
 
 		//	sorguyu çalıştıralım

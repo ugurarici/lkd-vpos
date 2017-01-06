@@ -22,6 +22,12 @@ try {
 		"cardExpirtyYear" => $expirtyDate[1],
 		"cardCVV" => $_POST['cardCVC'],
 		));
+
+	$result	= ["result"=>"success", "message"=>"İşlem başarılı, teşekkür ederiz."];
+} catch (phpmailerException $e) {
+	$result	= ["result"=>"warning", "message"=>"Ödeme işlemi başarılı ancak e-posta gönderiminde sorun yaşadık. Ödemeniz için teşekkür ederiz.<br>E-posta hatası: ".$e->errorMessage()];
 } catch (Exception $e) {
-	die(var_dump($e));
+	$result	= ["result"=>"error", "message"=>"İşlem başarısız. Lütfen tekrar deneyin.<br>HATA: ".$e->getMessage()];
 }
+
+echo json_encode($result);
