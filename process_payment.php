@@ -1,19 +1,13 @@
 <?php
 require "vendor/autoload.php";
 
-//	bulmaca çözümü SESSION'da saklandığı için session'ı başlatıyoruz
-session_start();
-$captchaAnswer = $_SESSION['captchaPhrase'];
-//	session_destroy();
-
-//	kullanıcının girdiği bulmaca yanıtı doğru değilse hata verip geri dönelim
-if( $_POST["captcha"] !== $captchaAnswer ) die( "Bulmaca yanıtı yanlış" );
-
 $normalizedCardNumber = str_replace(" ", "", $_POST['cardNo']);
 $expirtyDate = explode(" / ", $_POST['cardExpiryDate']);
 $amount = floatval(str_replace(',', '.', $_POST['amount']));
 
 try {
+	Helpers::checkCaptcha($_POST["captcha"]);
+
 	$payment = new Payment(array(
 		"userName" => $_POST['name'],
 		"userSurname" => $_POST['surname'],
