@@ -7,9 +7,8 @@
 	<!-- Vendor libraries -->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<style type="text/css">
-		body{
-			padding: 30px 0;
-		}
+		body{padding: 30px 0;}
+		.panel-heading{border-top-left-radius: inherit;border-top-right-radius: inherit;}
 	</style>
 </head>
 <body>
@@ -33,7 +32,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<form data-toggle="validator" method="POST" action="process_payment.php">
+					<form data-toggle="validator" method="POST" action="process_payment.php" id="payment-form">
 						<div class="row">
 							<div class="form-group col-sm-6">
 								<label for="name">Adınız <small style="color:red;"><em>*</em></small></label>
@@ -144,6 +143,9 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- messageModal --><div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog modal-sm"><div class="modal-content panel-success"><div class="modal-header panel-heading"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">İşlem sonucu</h4></div><div class="modal-body">...</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button></div></div></div></div>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
@@ -190,6 +192,86 @@
 				else if (this.value == 'aidat') {
 					$("#submitButton").text("ÖDEME YAP");
 					$("#memberWarning").show('fast');
+				}
+			});
+
+			var activateModal = function(result, message){
+				$("#messageModal .modal-content")
+				.removeClass("panel-success")
+				.removeClass("panel-warning")
+				.removeClass("panel-danger");
+
+				$("#messageModal .btn")
+				.removeClass("btn-default")
+				.removeClass("btn-danger");
+
+				$("#messageModal .modal-body").html(message);
+				$("#messageModal .btn").text("Kapat");
+
+				if(result==="success"){
+					$("#messageModal .modal-title").text("İşlem başarılı");
+					$("#messageModal .modal-content").addClass("panel-success");
+					$("#messageModal .btn").addClass("btn-default");
+				}else if(result==="warning"){
+					$("#messageModal .modal-title").text("Uyarı");
+					$("#messageModal .modal-content").addClass("panel-warning");
+					$("#messageModal .btn").addClass("btn-default");
+				}else if(result==="error"){
+					$("#messageModal .modal-title").text("HATA");
+					$("#messageModal .modal-content").addClass("panel-danger");
+					$("#messageModal .btn").addClass("btn-danger");
+					$("#messageModal .btn").text("Tekrar Dene");
+				}
+				
+				$('#messageModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
+			}
+
+			/* form gönderim işlemini buradan yapalım */
+			$("#payment-form").validator().on('submit', function (e) {
+				if (e.isDefaultPrevented()) {
+					activateModal("error", "Lütfen tüm form alanlarını kontrol ederek tekrar deneyin");
+				} else {
+					/* formun normal işleyişini engelleyelim */
+					event.preventDefault();
+
+					/* butonu disable yapıp "işlem yapılıyor" yazalım */
+					$("#payment-form button").prop("disabled", true);
+					var oldButtonText = $("#payment-form button").last().text();
+					$("#payment-form button").html('<i class="fa fa-refresh fa-spin" aria-hidden="true"></i> Lütfen bekleyin');
+
+					/* formun gideceği sayfayı alalım (ileride değişir falan diye iki yerde yazmasın) */
+					var $form = $( this ),
+					url = $form.attr( 'action' );
+
+					/* form içeriğini gönderelim */
+					var posting = $.post( url, $('#payment-form').serialize() );
+
+					/* talep başarıyla döndüğünde sonucu alıp içine bakalım */
+					posting.done(function( data ) {
+						var response = jQuery.parseJSON(data);
+						console.log(data);
+						console.log(response);
+						activateModal(response.result, response.message);
+
+						if(response.result === "success" || response.result === "warning"){
+							$('#payment-form').trigger("reset");
+						}
+					});
+
+					/* talep işlenemediğinde hata verelim */
+					posting.fail(function() {
+						activateModal("error", "İşlem gerçekleştirilemedi, lütfen daha sonra tekrar deneyin");
+					});
+
+					posting.always(function() {
+						$("#txtCaptcha").val("");
+						createCaptcha();
+						$("#payment-form :input").prop("disabled", false);
+						$("#payment-form button").last().text(oldButtonText);
+					});
 				}
 			});
 		});
