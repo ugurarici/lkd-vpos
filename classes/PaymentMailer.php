@@ -70,7 +70,7 @@ class PaymentMailer{
 		$this->mailer->setFrom(self::USER_FROM_EMAIL, self::USER_FROM_NAME);
 		$this->mailer->addAddress($this->payment->userEmail, $this->payment->userName." ".$this->payment->userSurname);
 		$this->mailer->Subject = self::USER_SUBJECT;
-		// $this->mailer->Body = $this->prepareUserMailContent();
+		$this->mailer->Body = $this->prepareUserMailContent();
 		// $this->mailer->AltBody = $this->prepareUserMailContent();
 		if($this->mailer->send()){
 			$this->payment->mailSent("user");
