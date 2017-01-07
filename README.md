@@ -22,5 +22,6 @@ Sistem temelde şu adımları uygular;
 * Ön yüzde json olarak alınan yanıt yorumlanarak modal içinde gösterilir
 
 ## Notlar
+- Erişilebilir dosyalar ```/public``` gibi bir dizine alınıp kalan kısım ve kaynağın http üzerinden erişime açık olmaması sağlanabilir (sunucu tarafında yapılandırma yapılabilecekse uygulamak hayli kolay)
 - Ön yüz dosyalarının düzenlenmesi, dış kaynaklı js ve css dosyalarının içeri alınması, bu varlıkların proje dizinlerine organize bir şekilde yerleştirilmesi sağlanabilir
 - Güvenlik tarafı için yetkili bi abiye gösterilebilir
