@@ -173,7 +173,7 @@
 			//	jquery.payment eklentisi sayesinde kart bilgilerini uygun formatta maskeliyoruz
 			$('input[id=cardNumber]').payment('formatCardNumber');
 			$('input[id=cardCVC]').payment('formatCardCVC');
-			$('input[id=cardExpiry').payment('formatCardExpiry');
+			$('input[id=cardExpiry]').payment('formatCardExpiry');
 
 			//	ilk yükleme için bulmaca oluşturulup gösterilmesini sağlıyoruz
 			createCaptcha();
