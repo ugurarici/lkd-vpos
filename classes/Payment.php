@@ -62,7 +62,7 @@ class Payment
         $validator = PaymentInformationValidation::validateFromObject($this);
         if (! $validator->isValid() ) {
             // $validator->throwException();
-            throw new Exception("Forma girilen bilgiler uygun formatta değil, lütfen kontrol edip tekrar deneyin", 1);
+            throw new Exception("Forma girilen bilgiler uygun formatta değil, lütfen kontrol edip tekrar deneyin. <br>" . implode(", <br>" ,$validator->getViolations()), 1);
         }
     }
     
