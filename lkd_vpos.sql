@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `payment_attempts` (
 `id` int(11) unsigned NOT NULL,
-  `transaction_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Sanal pos''a da gönderilen ödeme ID''si',
+  `transaction_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Sanal pos''a da gönderilen ödeme ID''si',
   `user_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Ödeme yapan kişinin adı',
   `user_surname` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Ödeme yapan kişinin soyadı',
   `user_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Ödeme yapan kişinin telefon numarası',

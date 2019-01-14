@@ -163,6 +163,6 @@ class Payment{
 	}
 
 	private function createConnection(){
-		$this->con = new PDO("mysql:host=".MYSQL_HOST.";dbname=".MYSQL_DATABASE.";charset=utf8", MYSQL_USER, MYSQL_PASSWORD);
+		$this->con = new PDO("mysql:host=".MYSQL_HOST.";dbname=".MYSQL_DATABASE.";charset=utf8", MYSQL_USER, MYSQL_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 	}
 }
