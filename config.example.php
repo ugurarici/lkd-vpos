@@ -1,6 +1,6 @@
 <?php
 
-// Veritabani bağlantı ayarları
+//Veritabani bağlantı ayarları
 define("MYSQL_DATABASE", "example");
 define("MYSQL_HOST", "example");
 define("MYSQL_USER", "example");
@@ -12,13 +12,13 @@ define("VPOS_PASSWORD", "example");
 define("VPOS_TERMINALNO", "example");
 define("VPOS_POXURL", "example");
 
-//	E-posta gönderim ayarları
-define("MAIL_IS_SMTP", false);	//	boolean
-//	SMTP true olacaksa aşağıdaki ayarlar önemlidir
-define("MAIL_SMTP_AUTH", true);	//	boolean
+//  E-posta gönderim ayarları
+define("MAIL_IS_SMTP", false);  // Boolean
+//  SMTP true olacaksa aşağıdaki ayarlar önemlidir
+define("MAIL_SMTP_AUTH", true); // Boolean
 define("MAIL_SMTP_SERVER", "smtp.example.com");
 define("MAIL_SMTP_PORT", 587);
-define("MAIL_SMTP_SECURE", "");	// "tls", "ssl", "" olabilir
+define("MAIL_SMTP_SECURE", ""); // "tls", "ssl", "" olabilir
 define("MAIL_SMTP_USER", "smtp@example.com");
 define("MAIL_SMTP_PASS", "example");
 
