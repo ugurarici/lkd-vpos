@@ -2,7 +2,7 @@
     "require": {
         "symfony/validator": "^3.2",
         "gregwar/captcha": "^1.1",
-        "phpmailer/phpmailer": "^5.2",
+        "phpmailer/phpmailer": "^6.5",
         "curl/curl": "^1.5"
     },
     "autoload": {
